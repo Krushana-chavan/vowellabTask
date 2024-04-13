@@ -9,8 +9,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUser, setlastpath } from '../../redux/users/users';
 import { toast } from 'react-toastify';
 
-import { API_URL, WEB_URL } from "../../config";
-
 const Signup = ({ show, handleClose, handleShowLogin }) => {
 	const [inputFormdisplay, setInputFormdisplay] = useState(true);
 	const [buttonDisable, setButtonDisable] = useState(false);
@@ -139,12 +137,12 @@ const Signup = ({ show, handleClose, handleShowLogin }) => {
 					<div className="text-center m-auto md-p-4 border-0 col-md-12 col-lg-5 col-sm-12 ">
 						<h2 className='fs-1 anton mb-4 cursor-pointer'>Sign Up</h2>
 						<div className='text-18 pb-3 d-flex m-auto text-center gap-2 justify-content-center pointer-event'> <div className='text-center'>Already a member? </div><div className='text-primary cursor-pointer' onClick={() => handleShowLogin()}>Log In</div></div>
-						<a style={{textDecoration:'none'}} href={API_URL + "/web/auth/google"} rel="noreferrer">
+						<a style={{textDecoration:'none'}} rel="noreferrer">
 						<Button className="btn-lg mt-3  my-3 rounded-0 bg-transparent text-black border w-100 align-content-center d-flex " >
 							<div className='fix_icon '><img className='' src={google} alt="" /></div> <span className='m-auto'>Sign Up with Google</span>
 						</Button>
 						</a>
-						<a style={{textDecoration:'none'}} href={API_URL + "/web/auth/facebook"} rel="noreferrer">
+						<a style={{textDecoration:'none'}} rel="noreferrer">
 						<Button variant="primary" className="btn-lg w-100 my-3 rounded-0 align-content-center d-flex">
 							<div className=' align-content-center '><img className='fix_icon p-0' src={Facebook} alt="" /></div> <span className='m-auto'>Sign Up with Facebook</span>
 						</Button>

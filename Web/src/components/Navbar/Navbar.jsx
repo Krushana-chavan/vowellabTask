@@ -12,9 +12,11 @@ import { LuShoppingCart } from "react-icons/lu";
 import DropdownButton from "react-bootstrap/esm/DropdownButton";
 import ButtonGroup from "react-bootstrap/esm/ButtonGroup";
 import Dropdown from "react-bootstrap/Dropdown";
+import { BsSearch } from 'react-icons/bs';
+import { MdClear } from 'react-icons/md'
 import Signup from "../signup/signup";
 import Login from "../signup/login";
-import ForgetPassword from "../signup/forgetPassword";
+
 import ModalCartItem from "./modalCartItem";
 import {toast} from 'react-toastify'
 
@@ -44,12 +46,11 @@ const Navbar = () => {
 	const [isUserLogin, setIsUserLogin] = useState(false);
 	const [showSignup, setShowSignup] = useState(false);
 	const [showLogin, setShowLogin] = useState(false);
-	const [showForgetPassword, setShowForgetPassword] = useState(false);
 	const [showDropdown, setShowDropdown] = useState(false);
 	const [MyCartData, setMyCartData] = useState([])
 	const [MyCartItemsCount, setMyCartItemsCount] = useState(0)
 	const [subTotal, setSubTotal] = useState(0)
-	
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const { userData } = useSelector((state) => state.user);
 	const {cartupdate} =useSelector((s)=>s.user);
@@ -63,11 +64,9 @@ const Navbar = () => {
 		{ link: "/", title: "Home" },
 		{ link: "/shop", title: "Shop" },
 		{ link: "/", title: "Search" },
-		 { link: '/', title: 'Accessories' },
-		{ link: "/", title: "Wholesale" },
+		
 		{ link: "/", title: "About Us" },
 		{ link: "/", title: "Blog" },
-		
 	];
 	//   const toggleDropdown = () => {
 	//     console.log("hii");
@@ -83,11 +82,7 @@ const Navbar = () => {
 		setShowLogin(true);
 	}
 
-	const handelShowForgetPassword = () => {
-		setShowSignup(false);
-		setShowLogin(false);
-		setShowForgetPassword(true);
-	}
+	
 
 	const handleCloseSignup = () => {
 		setShowSignup(false);
@@ -95,9 +90,7 @@ const Navbar = () => {
 	const handleCloseLogin = () => {
 		setShowLogin(false)
 	}
-	const handleCloseForgetPassword = () => {
-		setShowForgetPassword(false)
-	}
+
 	const closeDropdown = () => {
 		setShowDropdown(false);
 	};
@@ -119,6 +112,7 @@ const Navbar = () => {
 
 
   const getMyCart = async () => {
+  console.log("user Data in my cart------",userData)
 		
   if ( userData != null) {
 
@@ -150,9 +144,22 @@ const Navbar = () => {
 
 		}
 	}
+	else{
 	
 	}
-
+	}
+	const getSerchProducts = async () => {
+		try {
+			const response = await apiGET(`/v1/products/get-searchproducts?keyWord=${SearchKeyword}`)
+			if (response?.status === 200) {
+				setProducts(response?.data?.data);
+			} else {
+				console.error("Error fetching collection data:", response.error);
+			}
+		} catch (error) {
+			console.error("Error fetching collection data:", error);
+		}
+	}
 
 
 	useEffect(() => {
@@ -160,7 +167,7 @@ const Navbar = () => {
 			if (userData) getMyCart();
 		}, 1000);
 
-	
+		if (userData) getMyCart();
 
 		return () => {
 			clearInterval(interval);
@@ -178,7 +185,7 @@ const Navbar = () => {
 		},[]);
 
 	useEffect(()=>{
-		
+	
 			getMyCart()
 		
 
@@ -186,7 +193,9 @@ const Navbar = () => {
 		},[userData]);
 	
 
-	
+	useEffect(() => {
+		getSerchProducts()
+	}, [SearchKeyword])
 
 
 
@@ -199,7 +208,11 @@ const Navbar = () => {
 		localStorage.removeItem("user")
 	}
 	let mobileMenuRef = useRef();
-	
+	const handleNavigat = (item) => {
+		Navigate(`/product-page/${item?.name}`)
+		setSearchKeyword('')
+	}
+
 
 	useEffect(() => {
 		const checkIfClickedOutside = (e) => {
@@ -248,7 +261,7 @@ const Navbar = () => {
 					{subTotal != 0 ?
 						<div className="fs-3 mt-5">
 							<p style={{ marginBottom: "0" }}>Subtotal</p>
-							<p >₹{subTotal}</p>
+							<p >£{subTotal}</p>
 						</div>
 						: ""}
 				</div>
@@ -262,18 +275,31 @@ const Navbar = () => {
 
 
 			<div>
-				
+			
 				<div
 					className="d-flex w-100 py-1 justify-content-center justify-content-md-between align-items-center bg-prime"
 				>
 					<div className="px-2 px-sm-5 px-md-2 px-lg-5 w-100 d-block h-100">
 						<div className="d-flex w-100 justify-content-between">
 							<Link to={"/"} className="text-decoration-none">
-								<div className="text-white logo-shadow pb-2 fw-bold pricedown">Vowel Web</div>
+								<div className="text-white logo-shadow pb-2 fw-bold pricedown">vowelweb</div>
 							</Link>
 							<div className={`d-flex align-items-center justify-content-md-end gap-4 gap-md-0 gap-lg-4 `}>
 								<div className={`d-none d-md-block  ${serchInputClick ? `navInput-2 expended  ` : ""} navInput navInput-1 py-2 px-2    `} onClick={() => setserchInputClick(!serchInputClick)} data-bs-toggle="dropdown" aria-expanded="false" style={{ height: "40px", position: "relative" }}>
-								
+									<div className="d-flex justify-content-between align-items-center" style={{marginTop:'-3px'}}>
+										<input value={SearchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} placeholder="Search" type={"text"} className=" border-0 outline-0  " style={{ background: "transparent", outline: "none", }} />
+										<div className="d-flex justify-content-end">
+											<div onClick={()=>setSearchKeyword('')}>
+												{SearchKeyword?.length > 0 ?
+													<span className="px-3">
+														<MdClear size={16} color="black" />
+													</span> : ''}
+											</div>
+											<div>
+												<BsSearch size={16} color="black" />
+											</div>
+										</div>
+									</div>
 									<div className="dropdown-menu ">
 										<div className="dropdown-item d-flex justify-content-start " style={{ fontSize: "14px" }}>Trending Products</div>
 										{Products.map((item, i) => (<>
@@ -311,7 +337,9 @@ const Navbar = () => {
 									<div className="cursor-pointer ">
 										{userData ? (
 											<div className="d-flex align-item-center">
-											
+												{/* <button className="p-0 cursor-pointer custom-button mx-1 ">
+													<IoIosNotifications className=" fs-3" />
+												</button> */}
 												<DropdownButton
 													as={ButtonGroup}
 													key={"SORT BY"}
@@ -322,11 +350,12 @@ const Navbar = () => {
 												>
 													<Dropdown.Item eventKey="1"><Link to="/ordersPage" className="text-decoration-none text-dark">My Orders</Link></Dropdown.Item>
 													<Dropdown.Item eventKey="2"><Link to='/account/my-addresses' className="text-decoration-none text-dark">My Addresses </Link></Dropdown.Item>
-													
 													<Dropdown.Divider />
 													<Dropdown.Item eventKey="" onClick={() => {
 														dispatch(setCartUpdate(Math.floor(1000 + Math.random() * 9000)));
 														handleLogout() }}>Log out</Dropdown.Item>
+
+
 												</DropdownButton>
 
 											</div>
@@ -392,6 +421,7 @@ const Navbar = () => {
 												<Dropdown.Item eventKey="1">My Orders</Dropdown.Item>
 												<Dropdown.Item eventKey="2">My Addresses </Dropdown.Item>
 											
+											
 												<Dropdown.Divider />
 												<Dropdown.Item eventKey="">Log out</Dropdown.Item>
 
@@ -456,10 +486,13 @@ const Navbar = () => {
 					)}
 				</div>
 				<Signup show={showSignup} handleClose={handleCloseSignup} handleShowLogin={handleShowLogin} />
-				<Login show={showLogin} handleClose={handleCloseLogin} handleShowSignup={handleShowSignup} handelShowForgetPassword={handelShowForgetPassword} />
-				<ForgetPassword show={showForgetPassword} handleClose={handleCloseForgetPassword} />
+				<Login show={showLogin} handleClose={handleCloseLogin} handleShowSignup={handleShowSignup}  />
+			
 
 			</div>
+
+
+
 		</>
 	)
 }

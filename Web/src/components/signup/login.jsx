@@ -11,7 +11,7 @@ import { API_URL, WEB_URL } from "../../config";
 
 import { toast } from 'react-toastify';
 
-const Login = ({ show, handleClose, handleShowSignup, handelShowForgetPassword }) => {
+const Login = ({ show, handleClose, handleShowSignup }) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -185,7 +185,7 @@ const Login = ({ show, handleClose, handleShowSignup, handelShowForgetPassword }
 							<div className='text-danger d-flex'>{passwordError ? passwordError : ""}</div>
 
 						</div>
-						<div className='d-flex cursor-pointer text-decoration-underline pb-3 ' onClick={() => { handelShowForgetPassword() }}>Forget password ?</div>
+						<div className='d-flex cursor-pointer text-decoration-underline pb-3'>Forget password ?</div>
 						<Button
 							className="btn-lg bg-primary  border-0 rounded-0 w-100"
 							onClick={handleSignUp}
