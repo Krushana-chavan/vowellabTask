@@ -1,0 +1,369 @@
+@import url('https://fonts.googleapis.com/css2?family=Wix+Madefor+Text&display=swap');
+*{
+  font-family: 'Wix Madefor Text', sans-serif;
+}
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+.rdt_TableHeadRow>.rdt_TableCol:first-child {
+  padding-left: 30px;
+}
+
+.rdt_TableHeadRow>.rdt_TableCol:last-child {
+  padding-right: 30px;
+}
+
+.rdt_TableRow>.rdt_TableCell:first-child {
+  padding-left: 30px;
+}
+
+.rdt_TableRow>.rdt_TableCell:last-child {
+  padding-right: 30px;
+}
+
+.rdt_Table .rdt_TableContent .rdt_TableRow .rdt_TableCell .dropdown-class {
+  z-index: 999;
+}
+
+.rdt_TableHeadRow,
+.rdt_Pagination {
+  background: #f8fafc !important;
+}
+
+.fadeIn {
+  animation: 0.5s ease-out 0s 1 fadeIn;
+}
+
+.app-body {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.layout-wrapper {
+  display: flex;
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+}
+
+.sidebar-wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar-header {
+  min-height: 91px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* border-bottom: '1px solid rgb(12 19 32)'; */
+  padding: 30px;
+}
+
+.logo-text {
+  flex: 1;
+  padding: 0 20px;
+  font-size: 26px;
+  letter-spacing: 2px;
+  color: white;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.sidebar-menu-label {
+  color: #8e8e8e;
+  padding: 20px 30px 10px 30px;
+}
+
+.page-vertical-menu.ui.menu {
+  border: none;
+  box-shadow: none;
+  border-radius: none;
+  width: 230px;
+}
+
+.page-vertical-menu.ui.menu .item {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.page-vertical-menu.ui.menu .item:last-child {
+  border-bottom: 1px solid #ddd;
+}
+
+.ui.button {
+  text-transform: uppercase;
+}
+
+.full-page-container {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-content-wrapper {
+  flex: 1;
+  display: flex;
+  overflow: auto;
+  flex-direction: column;
+  background: white;
+  min-height: 100%;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 30px;
+  border-bottom: 1px solid rgb(239, 239, 239);
+}
+
+.page-header2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 30px;
+  /* border-bottom: 1px solid rgb(239, 239, 239); */
+}
+
+.sub-text {
+  margin-top: 4px;
+  font-weight: 300;
+  margin-bottom: 0px;
+  letter-spacing: 0.5px;
+  font-size: 11px;
+  color: #8392a5;
+  font-weight: 500;
+}
+
+.header-text {
+  margin-top: 14px;
+  font-weight: 500;
+  margin-bottom: 0px;
+  font-size: 22px;
+}
+
+.page-header-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.page-body {
+  background: #f1f5f9;
+  flex: 1;
+  display: flex;
+  padding: 30px;
+}
+
+.page-footer {
+  background: white;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  border-top: 1px solid #ddd;
+}
+
+.rdt_TableHead {
+  z-index: 7 !important;
+  font-size: 14px !important;
+}
+
+.hovered .icon-container {
+  display: block;
+}
+
+.track-info {
+  border-radius: 15px;
+  margin: 0 15px;
+  justify-content: center;
+  font-size: 12px;
+  padding: 2px 15px;
+  background: white;
+  color: blue;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+  display: flex;
+  align-items: center;
+}
+
+.track-info:hover {
+  background: blue;
+  color: white;
+}
+
+.three-dot-button {
+  border-radius: 100%;
+  justify-content: center;
+  padding: 3px;
+  background: white;
+  color: blue;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+  display: flex;
+  align-items: center;
+}
+
+.three-dot-button:hover {
+  background: blue;
+  color: white;
+}
+
+.shipping-label {
+  border-radius: 15px;
+  margin: 0 15px 0 0;
+  justify-content: center;
+  font-size: 12px;
+  padding: 2px 15px;
+  background: #939393;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+}
+
+.fixed-width-button {
+  width: 130px;
+}
+
+.capitalFirstLetter::first-letter {
+  text-transform: capitalize;
+}
+
+.analytics {
+  background: var(--wsr-color-D80, #FFFFFF);
+
+  height: 200px;
+  padding: 20px;
+}
+
+.analyticscard {
+  gap: 20px;
+  display: flex;
+  justify-content: flex-start;
+  width: 100% !important;
+}
+
+.analyticsSmallCard {
+  border: 1px solid #DFE5EB;
+  padding: 8px;
+  border-radius: 4px;
+}
+.settings-card:hover{
+  background-color: #ecf4ff;
+}
+.setting-breadcrum-link:hover{
+ background-color: #ffffff;
+}
+.shipping-head-button:hover{
+  background-color: #70b5f1;
+  color: white;
+}
+
+
+.customdropdown-hadding{
+  width: 390px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0px;
+  height: 40px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+.custom-dropdown {
+    width: 390px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;  
+  z-index: 10;
+  height: 220px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  overflow: auto;
+  }
+
+
+.option {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+}
+
+.option-img {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+}
+
+.option label {
+  flex-grow: 1;
+  cursor: pointer;
+
+}
+
+.option input {
+  cursor: pointer;
+
+  margin-left: 16px;
+}
+.borderRow{
+  border-bottom: 1px solid rgb(239, 239, 239);
+ /*  border-top: 1px solid rgb(239, 239, 239); */
+ 
+} 
+.borderNone{
+  border-top: none !important;
+}
+.salesoverviewHover:hover{
+  background-color: #D0E6FB;
+
+}
+.salesoverviewHoverDate:hover{
+  background-color: #D0E6FB;
+  border: 1px solid black;
+}
+.salesoverviborderewHover:hover{
+  border-top-left-radius: 10px;
+  /* border-top-right-radius: 10px; */
+}
+.salesoverviewHover {
+  border-bottom: "2px solid black";
+}
+.salesoverviborderewrightHover:hover{
+  border-top-right-radius: 10px;
+}
+.salesOverViewButtomBorder{
+  border-bottom: 3px solid #116DFF;
+}
+
+.TableBorder{
+  border-bottom: 1px solid rgb(209, 206, 206);
+}
+
+.table-cell:hover{
+  background-color: #95cbfb30;
+
+}
+.trClass:nth-child(even) {
+  background-color: #f0f1f1;
+}
+.createCouponborder {
+ border-color: #3899EC;
+ border-width: 2px;
+ border-style: solid;
+}
+
+.createCouponborderhover :hover{
+  border-color: #3899EC;
+  border-width: 1px;
+  border-style: solid;
+}

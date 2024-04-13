@@ -1,0 +1,5 @@
+module.exports.addAddress= require('./addAddress.service')
+module.exports.removeAddress = require('./removeAddress.service')
+module.exports.getAddressById = require('./getAddressById.service')
+module.exports.getMyAllAddress = require('./getMyAllAddress.service')
+module.exports.updateAddress = require('./updateAddress.service')

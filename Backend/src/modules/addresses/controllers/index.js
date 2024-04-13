@@ -1,0 +1,5 @@
+module.exports.addAddressController = require('./addAddress.controller')
+module.exports.removeAddressController = require('./removeAddress.controller')
+module.exports.getAddressByIdController = require('./getAddressById.controller')
+module.exports.getMyAllAddress = require('./getMyAllAddress.controller')
+module.exports.updateAddress = require('./updateAddress.controller')

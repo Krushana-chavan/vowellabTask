@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+    options {
+        skipStagesAfterUnstable()
+        disableRestartFromStage()
+    }
+    tools {
+        nodejs "nodejs"
+    }
+    stages {
+         stage('Logs') {
+            environment {
+                TSL_API_QA_IP = credentials("TSL_API_QA_IP")
+            }
+            steps {
+                withCredentials([
+                    sshUserPrivateKey(credentialsId: "jenkins-ssl", keyFileVariable: 'sshkey')
+                ]) {
+                    echo 'Starting logs'
+                    sh '''#!/bin/bash
+                        ssh -i $sshkey deployer@${TSL_API_QA_IP} "pm2 logs"
+                    '''
+                }
+            }
+        }
+    }
+}

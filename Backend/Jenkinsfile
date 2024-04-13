@@ -1,0 +1,236 @@
+pipeline {
+    agent any
+    options {
+        skipStagesAfterUnstable()
+        disableRestartFromStage()
+    }
+    tools {
+        nodejs "nodejs"
+    }
+    stages {
+
+        stage('install') {
+            when {
+                anyOf{
+                    expression{env.BRANCH_NAME == 'deploy-qa'}
+                    expression{env.BRANCH_NAME == 'deploy-prod'}
+                }
+            }
+            steps {
+                sh 'npm install'
+            }
+        }
+
+        stage('create-env-dev') {
+            when {
+                branch 'deploy-qa'
+            }
+            environment {
+                TSL_API_QA_PORT = credentials("TSL_API_QA_PORT")
+                TSL_API_QA_MONGODB_URL = credentials("TSL_API_QA_MONGODB_URL")
+                TSL_API_QA_DB_NAME = credentials("TSL_API_QA_DB_NAME")
+                TSL_API_QA_ROYAL_MAIL_KEY = credentials("TSL_API_QA_ROYAL_MAIL_KEY")
+                TSL_API_QA_REMOTE_BASE_URL = credentials("TSL_API_QA_REMOTE_BASE_URL")
+                TSL_API_QA_REMOTE_BACKEND_API_URL = credentials("TSL_API_QA_REMOTE_BACKEND_API_URL")
+                TSL_API_QA_GOOGLE_CLIENT_ID = credentials("TSL_API_QA_GOOGLE_CLIENT_ID")
+                TSL_API_QA_GOOGLE_CLIENT_SECRET = credentials("TSL_API_QA_GOOGLE_CLIENT_SECRET")
+                TSL_API_QA_FACEBOOK_CLIENT_ID = credentials("TSL_API_QA_FACEBOOK_CLIENT_ID")
+                TSL_API_QA_FACEBOOK_CLIENT_SECRET = credentials("TSL_API_QA_FACEBOOK_CLIENT_SECRET")
+                TSL_API_QA_JWT_SECRET = credentials("TSL_API_QA_JWT_SECRET")
+                TSL_API_QA_JWT_ACCESS_EXPIRATION_MINUTES = credentials("TSL_API_QA_JWT_ACCESS_EXPIRATION_MINUTES")
+                TSL_API_QA_JWT_REFRESH_EXPIRATION_MINUTES = credentials("TSL_API_QA_JWT_REFRESH_EXPIRATION_MINUTES")
+                TSL_API_QA_JWT_RESET_PASSWORD_EXPIRATION_MINUTES = credentials("TSL_API_QA_JWT_RESET_PASSWORD_EXPIRATION_MINUTES")
+                TSL_API_QA_JWT_VERIFY_EMAIL_EXPIRATION_MINUTES = credentials("TSL_API_QA_JWT_VERIFY_EMAIL_EXPIRATION_MINUTES")
+                TSL_API_QA_SENDGRID_API_KEY = credentials("TSL_API_QA_SENDGRID_API_KEY")
+                TSL_API_QA_SENDGRID_FROM = credentials("TSL_API_QA_SENDGRID_FROM")
+                TSL_API_QA_s3AccessKeyId = credentials("TSL_API_QA_s3AccessKeyId")
+                TSL_API_QA_s3AccessSecret = credentials("TSL_API_QA_s3AccessSecret")
+                TSL_API_QA_s3Region = credentials("TSL_API_QA_s3Region")
+                TSL_API_QA_s3Bucket = credentials("TSL_API_QA_s3Bucket")
+                TSL_API_QA_REGISTERED_USER_KEY = credentials("TSL_API_QA_REGISTERED_USER_KEY")
+                TSL_API_QA_NODE_ENV = credentials("TSL_API_QA_NODE_ENV")
+                TSL_API_QA_PAY360USERNAME = credentials("TSL_API_QA_PAY360USERNAME")
+                TSL_API_QA_PAY360PASSWORD = credentials("TSL_API_QA_PAY360PASSWORD")
+                TSL_API_QA_PAY360INSTALLATIONID = credentials("TSL_API_QA_PAY360INSTALLATIONID")
+                TSL_API_QA_CLIENT_EMAIL = credentials("TSL_API_QA_CLIENT_EMAIL")
+                TSL_API_QA_CLIENT_PRIVATE_KEY = credentials("TSL_API_QA_CLIENT_PRIVATE_KEY")
+                TSL_API_QA_SHIPTHEORY_EMAIL = credentials("TSL_API_QA_SHIPTHEORY_EMAIL")
+                TSL_API_QA_SHIPTHEORY_PASSWORD = credentials("TSL_API_QA_SHIPTHEORY_PASSWORD")
+
+                TSL_API_QA_IP = credentials("TSL_API_QA_IP")
+
+                BRANCH_NAME = '${env.BRANCH_NAME}'
+            }
+            steps {
+                echo 'Creating Enviorment varibles : '+env.BRANCH_NAME
+                sh '''#!/bin/bash
+                touch .env
+
+                echo "PORT=$TSL_API_QA_PORT" >> .env
+                echo "MONGODB_URL=$TSL_API_QA_MONGODB_URL" >> .env
+                echo "DB_NAME=$TSL_API_QA_DB_NAME" >> .env
+                echo "ROYAL_MAIL_KEY=$TSL_API_QA_ROYAL_MAIL_KEY" >> .env
+                echo "REMOTE_BASE_URL=$TSL_API_QA_REMOTE_BASE_URL" >> .env
+                echo "REMOTE_BACKEND_API_URL=$TSL_API_QA_REMOTE_BACKEND_API_URL" >> .env
+                echo "GOOGLE_CLIENT_ID=$TSL_API_QA_GOOGLE_CLIENT_ID" >> .env
+                echo "GOOGLE_CLIENT_SECRET=$TSL_API_QA_GOOGLE_CLIENT_SECRET" >> .env
+                echo "FACEBOOK_CLIENT_ID=$TSL_API_QA_FACEBOOK_CLIENT_ID" >> .env
+                echo "FACEBOOK_CLIENT_SECRET=$TSL_API_QA_FACEBOOK_CLIENT_SECRET" >> .env
+                echo "JWT_SECRET=$TSL_API_QA_JWT_SECRET" >> .env
+                echo "JWT_ACCESS_EXPIRATION_MINUTES=$TSL_API_QA_JWT_ACCESS_EXPIRATION_MINUTES" >> .env
+                echo "JWT_REFRESH_EXPIRATION_MINUTES=$TSL_API_QA_JWT_REFRESH_EXPIRATION_MINUTES" >> .env
+                echo "JWT_RESET_PASSWORD_EXPIRATION_MINUTES=$TSL_API_QA_JWT_RESET_PASSWORD_EXPIRATION_MINUTES" >> .env
+                echo "JWT_VERIFY_EMAIL_EXPIRATION_MINUTES=$TSL_API_QA_JWT_VERIFY_EMAIL_EXPIRATION_MINUTES" >> .env
+                echo "SENDGRID_API_KEY=$TSL_API_QA_SENDGRID_API_KEY" >> .env
+                echo "SENDGRID_FROM=$TSL_API_QA_SENDGRID_FROM" >> .env
+                echo "s3AccessKeyId=$TSL_API_QA_s3AccessKeyId" >> .env
+                echo "s3AccessSecret=$TSL_API_QA_s3AccessSecret" >> .env
+                echo "s3Region=$TSL_API_QA_s3Region" >> .env
+                echo "s3Bucket=$TSL_API_QA_s3Bucket" >> .env
+                echo "REGISTERED_USER_KEY=$TSL_API_QA_REGISTERED_USER_KEY" >> .env
+                echo "NODE_ENV=$TSL_API_QA_NODE_ENV" >> .env
+                echo "PAY360USERNAME=$TSL_API_QA_PAY360USERNAME" >> .env
+                echo "PAY360PASSWORD=$TSL_API_QA_PAY360PASSWORD" >> .env
+                echo "PAY360INSTALLATIONID=$TSL_API_QA_PAY360INSTALLATIONID" >> .env
+                echo "CLIENT_EMAIL=$TSL_API_QA_CLIENT_EMAIL" >> .env
+                echo "CLIENT_PRIVATE_KEY=$TSL_API_QA_CLIENT_PRIVATE_KEY" >> .env
+                echo "SHIPTHEORY_EMAIL=$TSL_API_QA_SHIPTHEORY_EMAIL" >> .env
+                echo "SHIPTHEORY_PASSWORD=$TSL_API_QA_SHIPTHEORY_PASSWORD" >> .env
+                
+                sed -i 's/environment/qa/g' ecosystem.config.js
+                
+                '''
+            }
+        }
+
+        stage('deploy-dev') {
+            when {
+                branch 'deploy-qa'
+            }
+            environment {
+                TSL_API_QA_IP = credentials("TSL_API_QA_IP")
+            }
+            steps {
+                withCredentials([
+                    sshUserPrivateKey(credentialsId: "jenkins-ssl", keyFileVariable: 'sshkey')
+                ]) {
+                    echo 'deploying the software'
+                    sh '''#!/bin/bash
+                    echo "Creating .ssh"
+                    mkdir -p /var/lib/jenkins/.ssh
+                    ssh-keyscan ${TSL_API_QA_IP} >> /var/lib/jenkins/.ssh/known_hosts
+                    ssh -i $sshkey deployer@${TSL_API_QA_IP} "mkdir -p /home/deployer/repo/vowelweb-api/$BRANCH_NAME"
+                    rsync -avz --info=progress0,name0,flist0,stats2 --stats --exclude  '.git' --delete -e "ssh -i $sshkey" ./ deployer@${TSL_API_QA_IP}:/home/deployer/repo/vowelweb-api/$BRANCH_NAME
+                    ssh -i $sshkey deployer@${TSL_API_QA_IP} "cd /home/deployer/repo/vowelweb-api/$BRANCH_NAME && pm2 stop ecosystem.config.js && pm2 start ecosystem.config.js && pm2 save"
+                    '''
+                }
+            }
+        }
+
+        stage('create-env-prod') {
+            when {
+                branch 'deploy-prod'
+            }
+            environment {
+                TSL_API_PROD_PORT = credentials("TSL_API_PROD_PORT")
+                TSL_API_PROD_MONGODB_URL = credentials("TSL_API_PROD_MONGODB_URL")
+                TSL_API_PROD_DB_NAME = credentials("TSL_API_PROD_DB_NAME")
+                TSL_API_PROD_ROYAL_MAIL_KEY = credentials("TSL_API_PROD_ROYAL_MAIL_KEY")
+                TSL_API_PROD_REMOTE_BASE_URL = credentials("TSL_API_PROD_REMOTE_BASE_URL")
+                TSL_API_PROD_REMOTE_BACKEND_API_URL = credentials("TSL_API_PROD_REMOTE_BACKEND_API_URL")
+                TSL_API_PROD_GOOGLE_CLIENT_ID = credentials("TSL_API_PROD_GOOGLE_CLIENT_ID")
+                TSL_API_PROD_GOOGLE_CLIENT_SECRET = credentials("TSL_API_PROD_GOOGLE_CLIENT_SECRET")
+                TSL_API_PROD_FACEBOOK_CLIENT_ID = credentials("TSL_API_PROD_FACEBOOK_CLIENT_ID")
+                TSL_API_PROD_FACEBOOK_CLIENT_SECRET = credentials("TSL_API_PROD_FACEBOOK_CLIENT_SECRET")
+                TSL_API_PROD_JWT_SECRET = credentials("TSL_API_PROD_JWT_SECRET")
+                TSL_API_PROD_JWT_ACCESS_EXPIRATION_MINUTES = credentials("TSL_API_PROD_JWT_ACCESS_EXPIRATION_MINUTES")
+                TSL_API_PROD_JWT_REFRESH_EXPIRATION_MINUTES = credentials("TSL_API_PROD_JWT_REFRESH_EXPIRATION_MINUTES")
+                TSL_API_PROD_JWT_RESET_PASSWORD_EXPIRATION_MINUTES = credentials("TSL_API_PROD_JWT_RESET_PASSWORD_EXPIRATION_MINUTES")
+                TSL_API_PROD_JWT_VERIFY_EMAIL_EXPIRATION_MINUTES = credentials("TSL_API_PROD_JWT_VERIFY_EMAIL_EXPIRATION_MINUTES")
+                TSL_API_PROD_SENDGRID_API_KEY = credentials("TSL_API_PROD_SENDGRID_API_KEY")
+                TSL_API_PROD_SENDGRID_FROM = credentials("TSL_API_PROD_SENDGRID_FROM")
+                TSL_API_PROD_s3AccessKeyId = credentials("TSL_API_PROD_s3AccessKeyId")
+                TSL_API_PROD_s3AccessSecret = credentials("TSL_API_PROD_s3AccessSecret")
+                TSL_API_PROD_s3Region = credentials("TSL_API_PROD_s3Region")
+                TSL_API_PROD_s3Bucket = credentials("TSL_API_PROD_s3Bucket")
+                TSL_API_PROD_REGISTERED_USER_KEY = credentials("TSL_API_PROD_REGISTERED_USER_KEY")
+                TSL_API_PROD_NODE_ENV = credentials("TSL_API_PROD_NODE_ENV")
+                TSL_API_PROD_PAY360USERNAME = credentials("TSL_API_PROD_PAY360USERNAME")
+                TSL_API_PROD_PAY360PASSWORD = credentials("TSL_API_PROD_PAY360PASSWORD")
+                TSL_API_PROD_PAY360INSTALLATIONID = credentials("TSL_API_PROD_PAY360INSTALLATIONID")
+                TSL_API_PROD_CLIENT_EMAIL = credentials("TSL_API_PROD_CLIENT_EMAIL")
+                TSL_API_PROD_CLIENT_PRIVATE_KEY = credentials("TSL_API_PROD_CLIENT_PRIVATE_KEY")
+                TSL_API_PROD_SHIPTHEORY_EMAIL = credentials("TSL_API_PROD_SHIPTHEORY_EMAIL")
+                TSL_API_PROD_SHIPTHEORY_PASSWORD = credentials("TSL_API_PROD_SHIPTHEORY_PASSWORD")
+
+                TSL_API_PROD_IP = credentials("TSL_API_PROD_IP")
+
+                BRANCH_NAME = '${env.BRANCH_NAME}'
+            }
+            steps {
+                echo 'Creating Enviorment varibles : '+env.BRANCH_NAME
+                sh '''#!/bin/bash
+                touch .env
+
+                echo "PORT=$TSL_API_PROD_PORT" >> .env
+                echo "MONGODB_URL=$TSL_API_PROD_MONGODB_URL" >> .env
+                echo "DB_NAME=$TSL_API_PROD_DB_NAME" >> .env
+                echo "ROYAL_MAIL_KEY=$TSL_API_PROD_ROYAL_MAIL_KEY" >> .env
+                echo "REMOTE_BASE_URL=$TSL_API_PROD_REMOTE_BASE_URL" >> .env
+                echo "REMOTE_BACKEND_API_URL=$TSL_API_PROD_REMOTE_BACKEND_API_URL" >> .env
+                echo "GOOGLE_CLIENT_ID=$TSL_API_PROD_GOOGLE_CLIENT_ID" >> .env
+                echo "GOOGLE_CLIENT_SECRET=$TSL_API_PROD_GOOGLE_CLIENT_SECRET" >> .env
+                echo "FACEBOOK_CLIENT_ID=$TSL_API_PROD_FACEBOOK_CLIENT_ID" >> .env
+                echo "FACEBOOK_CLIENT_SECRET=$TSL_API_PROD_FACEBOOK_CLIENT_SECRET" >> .env
+                echo "JWT_SECRET=$TSL_API_PROD_JWT_SECRET" >> .env
+                echo "JWT_ACCESS_EXPIRATION_MINUTES=$TSL_API_PROD_JWT_ACCESS_EXPIRATION_MINUTES" >> .env
+                echo "JWT_REFRESH_EXPIRATION_MINUTES=$TSL_API_PROD_JWT_REFRESH_EXPIRATION_MINUTES" >> .env
+                echo "JWT_RESET_PASSWORD_EXPIRATION_MINUTES=$TSL_API_PROD_JWT_RESET_PASSWORD_EXPIRATION_MINUTES" >> .env
+                echo "JWT_VERIFY_EMAIL_EXPIRATION_MINUTES=$TSL_API_PROD_JWT_VERIFY_EMAIL_EXPIRATION_MINUTES" >> .env
+                echo "SENDGRID_API_KEY=$TSL_API_PROD_SENDGRID_API_KEY" >> .env
+                echo "SENDGRID_FROM=$TSL_API_PROD_SENDGRID_FROM" >> .env
+                echo "s3AccessKeyId=$TSL_API_PROD_s3AccessKeyId" >> .env
+                echo "s3AccessSecret=$TSL_API_PROD_s3AccessSecret" >> .env
+                echo "s3Region=$TSL_API_PROD_s3Region" >> .env
+                echo "s3Bucket=$TSL_API_PROD_s3Bucket" >> .env
+                echo "REGISTERED_USER_KEY=$TSL_API_PROD_REGISTERED_USER_KEY" >> .env
+                echo "NODE_ENV=$TSL_API_PROD_NODE_ENV" >> .env
+                echo "PAY360USERNAME=$TSL_API_PROD_PAY360USERNAME" >> .env
+                echo "PAY360PASSWORD=$TSL_API_PROD_PAY360PASSWORD" >> .env
+                echo "PAY360INSTALLATIONID=$TSL_API_PROD_PAY360INSTALLATIONID" >> .env
+                echo "CLIENT_EMAIL=$TSL_API_PROD_CLIENT_EMAIL" >> .env
+                echo "CLIENT_PRIVATE_KEY=$TSL_API_PROD_CLIENT_PRIVATE_KEY" >> .env
+                echo "SHIPTHEORY_EMAIL=$TSL_API_PROD_SHIPTHEORY_EMAIL" >> .env
+                echo "SHIPTHEORY_PASSWORD=$TSL_API_PROD_SHIPTHEORY_PASSWORD" >> .env
+
+                sed -i 's/environment/prod/g' ecosystem.config.js
+
+                '''
+            }
+        }
+
+        stage('deploy-prod') {
+            when {
+                branch 'deploy-prod'
+            }
+            environment {
+                TSL_API_PROD_IP = credentials("TSL_API_PROD_IP")
+            }
+            steps {
+                withCredentials([
+                    sshUserPrivateKey(credentialsId: "jenkins-ssl", keyFileVariable: 'sshkey')
+                ]) {
+                    echo 'deploying the software'
+                    sh '''#!/bin/bash
+                    echo "Creating .ssh"
+                    mkdir -p /var/lib/jenkins/.ssh
+                    ssh-keyscan ${TSL_API_PROD_IP} >> /var/lib/jenkins/.ssh/known_hosts
+                    ssh -i $sshkey deployer@${TSL_API_PROD_IP} "mkdir -p /home/deployer/repo/vowelweb-api/$BRANCH_NAME"
+                    rsync -avz --exclude  '.git' --delete -e "ssh -i $sshkey" ./ deployer@${TSL_API_PROD_IP}:/home/deployer/repo/vowelweb-api/$BRANCH_NAME
+                    ssh -i $sshkey deployer@${TSL_API_PROD_IP} "cd /home/deployer/repo/vowelweb-api/$BRANCH_NAME && pm2 stop ecosystem.config.js && pm2 start ecosystem.config.js && pm2 save"
+                    '''
+                }
+            }
+        }
+    }
+}
