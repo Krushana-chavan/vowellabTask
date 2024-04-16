@@ -183,7 +183,7 @@ function addProduct(props) {
 
 
                 Toast.fire('Success!', "Product added Successfully", 'success');
-                navigate(-1)
+                navigate("/dashboard/all-products")
                 props.setVisible(false)
 
                 props.getAllproducts();
