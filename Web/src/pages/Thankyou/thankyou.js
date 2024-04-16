@@ -10,12 +10,18 @@ const Thankyou = () => {
   const { orderId } = useParams(); 
 
 
-
+  const updateOrder = async() => {
+    let updateData = await apiPUT(`/v1/order/sucessRoute/${orderId}`)
+    console.log(updateData)
+  }
   const continueShopping = () => {
     
     navigate('/');
   };
 
+  useEffect(() => {
+    updateOrder()
+  }, [])
 
   return (
     <Container className="mt-5 mb-5">

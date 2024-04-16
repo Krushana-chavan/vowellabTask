@@ -9,7 +9,7 @@ const addToCartController = catchAsync(async (req, res) => {
 
 	const userId = req.user.id;
 	let quant = req?.body?.quantity?req?.body?.quantity:1;
-	console.log("quant------",quant,req?.body)
+
 	
 	let { productId } = await pick(req.body, ["productId"]);
 

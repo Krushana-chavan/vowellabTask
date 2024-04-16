@@ -6,6 +6,11 @@ const deleteMyCart = require('../../cart/services/deleteMyCart.service');
 const successOrder = async (productId) => {
     try {
         const filterQuery = { active: true, _id: mongoose.Types.ObjectId(productId) };
+        const findSucceessOrder = await orderModel.findOne(filterQuery);
+        if(findSucceessOrder?.paymentStatus == "paid"){
+            return {data:"Order already paid",status:false,code:403}
+        };
+    
         const updateResult = await orderModel.findOneAndUpdate(filterQuery, {paymentStatus:'paid',orderStatus:"fulfilled" }, { new: true });
         let ProductDetails = updateResult.productDetail;
         for(let i = 0 ; i< ProductDetails.length;i++){

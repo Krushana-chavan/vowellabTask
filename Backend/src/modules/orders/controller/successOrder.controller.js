@@ -7,16 +7,12 @@ const successOrder = catchAsync(async (req, res) => {
 	const { id } = await pick(req.params, ['id'])
 	const insertResult = await orderServices.successOrder( id );
 
-	if (insertResult.status) {
+	if (insertResult.code == 200) {
 		sendResponse(res, httpStatus.OK, insertResult.data, null);
-	} else {
-		sendResponse(res,
-			insertResult.code == 400 ? httpStatus.BAD_REQUEST
-				: insertResult.code == 500 ? httpStatus.INTERNAL_SERVER_ERROR
-					: httpStatus.BAD_REQUEST,
-			null,
-			insertResult.msg
-		);
+	} else if (insertResult.code == 400) {
+		sendResponse(res, httpStatus.BadRequest,null, insertResult.data)
+	}else if( insertResult.code == 403){
+		sendResponse(res,403,null,insertResult.data)
 	}
 });
 

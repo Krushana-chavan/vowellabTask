@@ -31,7 +31,7 @@ const getMyAllAddress = async (userId) => {
             return { data: "Address not found", status: false, code: 400 };
         }
     } catch (error) {
-        console.log("Error while getting data:", error);
+
         return { status: false, code: 500, msg: error };
     }
 }

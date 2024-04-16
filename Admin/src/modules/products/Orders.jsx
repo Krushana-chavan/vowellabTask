@@ -78,7 +78,7 @@ const Orders = () => {
 		},
 		{
 			name: 'Customer',
-			selector: (row) => row?.shippingAdderess?.shippingAddressObj?.firstName +" "+ row?.shippingAdderess?.shippingAddressObj?.lastName,
+			selector: (row) => row?.usersObj?.username,
 			width: '15%'
 		},
 		{

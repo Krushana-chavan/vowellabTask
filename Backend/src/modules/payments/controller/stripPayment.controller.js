@@ -11,29 +11,35 @@ const stripePayment = async (req, res) => {
 
     let orderDetail = await getOrdersById(orderId)
     let id =orderDetail?.data?.shippingAdderess?.shippingAddressId;
-    console.log(id)
+
     let addressObj = await getAddressById({id})
-    console.log("addressObj", addressObj)
+  
     let data = (orderDetail?.data?.productDetail)
-  console.log(orderDetail)
+
  
-    const lineItems = data && data.map((product) => ({
-        price_data: {
-            currency: "inr",
-            product_data: {
-                name: product.productDetailsObj.name,
-                description: product.productDetailsObj.description,
-                images: [product.productDetailsObj.productImageUrl],
-            },
-            unit_amount: (Number(product.price) * Number(product?.quantity) ) * 100 ,
-        },
-        quantity: 1, 
-    }));
-    
+    const lineItems = data && data.map((product) => {
+      console.log(product)
+      // Extract plain text description from HTML description
+      const plainTextDescription = product.productDetailsObj.description.replace(/<[^>]+>/g, '');
+      
+      return {
+          price_data: {
+              currency: "inr",
+              product_data: {
+                  name: product.productDetailsObj.name,
+                  description: plainTextDescription || "Description not provided", // Use plain text description
+              
+              },
+              unit_amount: (Number(product?.price) * Number(product?.quantity)) * 100,
+          },
+          quantity: 1,
+      };
+  });
+  
 
     const customer = await stripe.customers.create({
-        name: `${addressObj?.data?.firstName} ${addressObj?.data?.lastName}`,
-  address: {
+    name: `${addressObj?.data?.firstName} ${addressObj?.data?.lastName}`,
+    address: {
     line1: `${addressObj?.data?.addressLine1}`,
     postal_code: `${addressObj?.data?.zip}`,
     city:`${addressObj?.data?.city}`,
@@ -51,8 +57,7 @@ const stripePayment = async (req, res) => {
         customer: customer.id 
     });
 
-  await successOrder(orderId)
-    console.log(session.id);
+ 
     res.json({ id: session.id });
 };
 

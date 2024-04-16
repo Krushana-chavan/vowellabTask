@@ -13,7 +13,7 @@ function AuthProvider({ children }) {
 	let signin = async (userDetails, callback) => {
 		let payload = userDetails;
 		let response = await apiPOST('/v1/auth/admin-login', payload);
-		console.log(response)
+	
 		if (response.status == 200) {
 			window.localStorage.setItem('accesstoken', response.data.data.tokens.access.token);
 			window.localStorage.setItem("refreshToken", response.data.data.tokens.access.token)

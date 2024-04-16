@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { uploadPost } from "./../../utils/apiHelper";
 
 const DocDropzone = ({ fileItem, setFile }) => {
-  console.log(fileItem);
+
   let [fileUrl, setFileUrl] = useState(fileItem);
   let [loading, setLoading] = useState(false);
   let [acceptedFile, setAcceptedFile] = useState("");
@@ -21,7 +21,7 @@ const DocDropzone = ({ fileItem, setFile }) => {
     }
   }
 
-  console.log(fileItem);
+
   const onDrop = useCallback((acceptedFiles, fileRejections) => {
     if (fileRejections.length > 1) {
       toast.error("Please select only 1 document");
@@ -44,15 +44,7 @@ const DocDropzone = ({ fileItem, setFile }) => {
       return
     }
 
-    // if (acceptedFile[0].type.match(/application\/pdf/)) {
-    //   let file = acceptedFiles.map((file) =>
-    //     Object.assign(file, {
-    //       preview: URL.createObjectURL(file),
-    //     })
-    //   );
-    //   console.log("jkgsnsg");
-
-    //   uploadToCloud(file[0]);
+ 
   }, []);
 
   const removeFile = (file) => {
@@ -122,7 +114,7 @@ const DocDropzone = ({ fileItem, setFile }) => {
       };
       xhr.onerror = function (error) {
         setLoading(false);
-        console.log("Could not upload image please try again", "asset image");
+     
       };
       xhr.send(file);
     } catch (error) {
@@ -142,7 +134,7 @@ const DocDropzone = ({ fileItem, setFile }) => {
       }
     }
   }, [fileItem]);
-  console.log(fileUrl);
+
   return (
     <div className="">
       {fileUrl == "" && uploadProgress == 0 ? (

@@ -51,17 +51,17 @@ const processGoogleAuth = async (gUser) => {
 
 const socialLogin = catchAsync(async (req, res) => {
   const { token } = await pick(req.body, ["token"]);
-  console.log("here");
+
   const { sub } = await tokenServices.justVerifyToken(token);
   let user = await userServices.getUserById(sub);
   user.id = user._id;
 
   let currentTimeStamp = new Date();
-  console.log("currentTimeStamp :", currentTimeStamp);
+ 
   utc =
     currentTimeStamp.getTime() + currentTimeStamp.getTimezoneOffset() * 60000;
   let singaporeTime = new Date(utc + 3600000 * "+8");
-  console.log("The local time in Singapore is " + singaporeTime);
+ 
   let updateRes = await userServices.updateUserById(user.id, {
     currentLoginTimeStamp: singaporeTime,
   });

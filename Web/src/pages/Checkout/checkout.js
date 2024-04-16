@@ -68,6 +68,7 @@ const Checkout = () => {
 
 	const makepayment = async() => {
 		let data =	await creatOrder()
+
 		const strip = await loadStripe("pk_test_51P42dwSIoo6YwzN49A7SFv2vOBVrarS24qMx87StYp4zo6offCHrIIeFa1hGalMs8akAqHrWUssvtYOL2q5PtPGN00s9BflGwn")
 		 const body = {
 			orderId:data,
@@ -262,7 +263,7 @@ const Checkout = () => {
 					totalAmount += currentProduct?.productDetails[0]?.price * currentProduct?.quantity;
 				}
 			}
-			totalAmount += deliveryCharg;
+			totalAmount += 40;
 			let payload = {
 				productDetail,
 				paymentMode: "online",
@@ -271,9 +272,10 @@ const Checkout = () => {
 				deliveryMethod:"DTDC",
 				shippingAdderess: { shippingAddressId: defaultAddress?.id },
 				deliveryCharge: deliveryCharg,
-				amountToPay: Number(deliveryCharg) + Number(Number(totalAmountToPay).toFixed(2)),
+				amountToPay:  totalAmount,
 				
 			}
+			console.log(payload);
 			const response = await apiPOST(`/v1/order/add-order`, payload);
 			
 			if (response?.data?.status) {

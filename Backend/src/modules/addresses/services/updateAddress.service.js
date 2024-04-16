@@ -6,7 +6,7 @@ const updateAddress = async (addressData,id) => {
             const { userId, isDefault } = addressData;
             const  addressId = id
             const filterQuery ={_id: mongoose.Types.ObjectId(addressId), userId:mongoose.Types.ObjectId(userId)}
-            console.log("addressData: " , addressData);
+       
             if (isDefault) {
                 await ADDRESS_MODEL.updateMany({ isDefault: true }, { $set: { isDefault: false } });
             }
@@ -24,7 +24,7 @@ const updateAddress = async (addressData,id) => {
             }
         }
     } catch (error) {
-        console.log("Error while updating address:", error);
+   
         return { status: false, code: 500, msg: error };
     }
 };

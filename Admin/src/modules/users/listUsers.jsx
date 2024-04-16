@@ -23,7 +23,7 @@ function UserList() {
       let responce = await apiGET(
         `/v1/user/get-All-users/?page=${page}&limit=${limit}`
       );
-      console.log(responce);
+    
       if (responce.status === 200) {
 
         setUsers(responce.data.data.data);

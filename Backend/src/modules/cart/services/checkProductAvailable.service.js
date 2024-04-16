@@ -82,7 +82,7 @@ const checkProductAvailable = async (userId) => {
 			return { msg: "Product not found in your cart", status: false, code: 400 };
 		}
 	} catch (error) {
-		console.log("Error while getting data:", error);
+	
 		return { status: false, code: 500, msg: "Something went wrong" };
 	}
 }

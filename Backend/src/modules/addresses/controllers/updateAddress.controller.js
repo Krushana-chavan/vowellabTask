@@ -12,7 +12,6 @@ const updateAddressController = catchAsync(async (req, res) => {
 
     const result = await Services.updateAddress({userId:userId,firstName,lastName,phone,orderNotes,country,addressLine1,addressLine2,city,state,zip,isDefault},id);
 
-    console.log(result);
     if (result?.code === 200) {
         sendResponse(res, httpStatus.OK, {
             data: result?.data,

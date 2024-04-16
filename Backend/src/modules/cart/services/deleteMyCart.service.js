@@ -24,7 +24,7 @@ const deleteMyCart = async (userId) => {
       return { data: "Product not found", status: false, code: 400 };
   }
   } catch (error) {
-    console.log("Error while getting data:", error);
+
     return { status: false, code: 500, msg: error };
   }
 }
