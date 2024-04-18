@@ -92,7 +92,7 @@ function Products() {
   }, [action]);
 
   const onClickEditButton = (id) => {
-    navigate(`/product/delete-product/${id}`);
+    navigate(`/dashboard/all-products/edit/${id}`)
   };
 
  
