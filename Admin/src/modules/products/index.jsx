@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Breadcrumb, Button, Dropdown, Icon, Input, Sidebar } from 'semantic-ui-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import TableWrapper from '../../utils/tableWrapper';
-import { apiGET, apiPOST, objectToQueryParam } from '../../utils/apiHelper';
+import { apiGET, apiPOST, apiPUT, objectToQueryParam } from '../../utils/apiHelper';
 import moment from 'moment/moment';
 import Swal from 'sweetalert2';
 import AddProduct from './addProduct';
@@ -92,72 +92,41 @@ function Products() {
   }, [action]);
 
   const onClickEditButton = (id) => {
-    navigate(`/dashboard/all-products/edit/${id}`);
+    navigate(`/product/delete-product/${id}`);
   };
 
-  const checkStatus = async (id) => {
-
-    try {
-      let result = await apiPOST(`/v1//products/featureToggle/${id}`)
-      if (result?.status) {
-        getAllproducts()
-        Swal.fire({
-          title: "Success!",
-          text: "Feature status changed",
-          icon: "success",
-        })
-      } else {
-        Swal.fire({
-          title: "Error!",
-          text: "Something went wrong",
-          icon: "error",
-        });
-      }
-    } catch (error) {
-      Swal.fire({
-        title: "Error!",
-        text: error,
-        icon: "error",
-      })
-    }
-  }
-  const checkVisibal = async (id) => {
-
-    try {
-      let result = await apiPOST(`/v1//products/visibleToggle/${id}`)
-      if (result?.status) {
-        getAllproducts()
-      
-        if(result?.data?.data?.visible){
+ 
+  const onDeleteButton = async(id) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+         'success'
+        )
+        const response = await apiPUT(`/v1/products/delete-product/${id}` )
+        console.log(response)
+        if (response.status === 200) {
+          getAllproducts()
+        } else {
           Swal.fire({
-            title: "Success!",
-            text: "Shown in online store",
-            icon: "success",
-          })
+            title: "Error!",
+            text: response?.data?.data,
+            icon: "error",
+          });
         }
-        else{
-          Swal.fire({
-            title: "Success!",
-            text: "Hidden in online store",
-            icon: "success",
-          })
-        }
-      
-      } else {
-        Swal.fire({
-          title: "Error!",
-          text: "Something went wrong",
-          icon: "error",
-        });
       }
-    } catch (error) {
-      Swal.fire({
-        title: "Error!",
-        text: error,
-        icon: "error",
-      })
-    }
-  }
+    })
+  };
+
 
   const dropDownOptions = [
     { key: 1, text: 'All Products', value: false },
@@ -205,16 +174,6 @@ function Products() {
       selector: (row) => row.inventory,
       width: '10%'
     },
-    {
-      name: 'Is-Featured',
-      selector: (row) => (<div>
-        <Radio
-          toggle
-          onChange={() => checkStatus(row?._id)}
-          checked={row?.isFeatured}
-        />
-      </div>)
-    },
    
     {
       name: 'Created On',
@@ -222,11 +181,22 @@ function Products() {
       width:"20%"
     },
     {
+      name: 'Delete',
+      selector: (row) => (
+        <div>
+        
+          <button className="ui blue icon button basic" onClick={() => { onDeleteButton(row._id) }}>
+          <i class="trash alternate icon"></i> 
+          </button>
+        </div>
+      ),
+    },
+    {
       name: 'Action',
       selector: (row) => (
         <div>
         
-          <button className="ui blue icon button basic" onClick={() => { setVisible(true); onClickEditButton(row._id) }}>
+          <button className="ui blue icon button basic" onClick={() => { setVisible(true); onClickEditButton(row._id) }} >
             <i className="edit icon"></i>
           </button>
         </div>
@@ -284,19 +254,7 @@ function Products() {
           </div>
         </div>
 
-        <div className='page-header'>
-
-          <Dropdown placeholder='Products' search selection options={dropDownOptions}
-            onChange={(e, d) => handleIsfeatured(e, d)} />
-
-          <Input icon='search' placeholder='Search names'
-            value={search || ''}
-            style={{ marginRight: '10px' }}
-            onChange={(e) => {
-              setsearch(e.target.value)
-            }}
-          />
-        </div>
+      
 
         <div style={{ overflowX: 'scroll', minWidth: '100%', maxWidth: '100vw', whiteSpace: 'nowrap' }}>
 

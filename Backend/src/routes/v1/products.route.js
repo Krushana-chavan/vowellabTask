@@ -22,7 +22,7 @@ router.route('/add-category').post(auth("adminAccess"), productsController.addCa
 router.route('/getproduct-by-category/:category').get(productsController.youmaylike);
 router.route('/getproduct-By-brand/:name').get(auth("adminAccess"), productsController.findProductbyBrand)
 router.route('/getproductBrand-name/').get(productsController.getAllBrandNames)
-router.route('/delete-category/:name').put(auth('adminAccess'), productsController.deleteCategory)
+router.route('/delete-product/:id').put(auth('adminAccess'), productsController.deleteProduct)
 router.route('/add-product-incatogry-admin').post(productsController.addProductInBrandCatogryController)
 router.route('/get-unique-brands').get(productsController.getUniqueBrands)
 

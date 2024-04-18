@@ -8,7 +8,7 @@ const admingetAllProducts = async (page, limit, filter, sort) => {
         const start = page && parseInt(page, 10) > 0 ? parseInt(page, 10) : 1;
         const skip = (start - 1) * length;
         let filterQuery = {
-            // visible: true,
+           active:true
         };
 
 

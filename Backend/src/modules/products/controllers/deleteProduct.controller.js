@@ -5,9 +5,10 @@ const { sendResponse } = require("../../../utils/responseHandler")
 const CategoryService = require('../services');
 
 
-const deleteCategory = catchAsync(async (req, res) => {
-    const { name } = await pick(req.params, ['name'])
-    const removed = await CategoryService.deleteCategory(name)
+const deleteProduct = catchAsync(async (req, res) => {
+    const { id } = await pick(req.params, ['id'])
+
+    const removed = await CategoryService.deleteProduct(id)
     if (removed.status) {
         sendResponse(res, httpStatus.OK, removed, null);
     } else {
@@ -23,4 +24,4 @@ const deleteCategory = catchAsync(async (req, res) => {
     }
 })
 
-module.exports = deleteCategory
+module.exports = deleteProduct

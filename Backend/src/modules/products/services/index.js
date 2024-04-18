@@ -9,12 +9,12 @@ module.exports.updateProduct = require('./updateProduct.service')
 module.exports.getProductById = require('./getProductById.service')
 module.exports.updateProductInventory = require('./updateInventory.services')
 module.exports.getSerchProducts = require('./getSearchForProducts.services')
-module.exports.deleteCategory = require('./deleteCategory.services')
+module.exports.deleteProduct = require('./deleteProduct.services')
 module.exports.featureTOggle = require('./featureTOggle.services')
 module.exports.visibleTOggle = require('./visibleTOggle.services')
 module.exports.getAllProductsAdmin = require('./getAllProductsAdmin.services')
 module.exports.addProductInBrandCatogry = require('./addProductBrandCatogry.services')
 module.exports.getProductByName = require('./getProductByName.service')
-module.exports.getUniqueBrands = require('./getUniqueBrands.service')
+
 
 
